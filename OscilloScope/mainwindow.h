@@ -10,6 +10,11 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QStackedLayout>
+#include <QtWidgets/QDialogButtonBox>
+#include "deviceAccessPage.h"
+#include "importFilePage.h"
 
 class MainWindow : public QMainWindow
 {
@@ -18,13 +23,22 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+
 private:
     //void createFormInterior();
     QPushButton *CheckDeviceAccButton;
     QLabel *AccLabel;
+    QListWidget *listWidget;
+    QListWidgetItem *itemAccessPage;
+    QListWidgetItem *itemExportPage;
+    QStackedLayout *stackLay;
+    deviceAccessPage *AccessPage;
+    importFilePage *impFilePage;
+    QPushButton *pbExit;
+    QHBoxLayout *buttonBox;
 
 private slots:
-    void handleButton();
+    void onAccessItemClicked(QListWidgetItem* item);
 };
 
 

@@ -3,36 +3,57 @@
 //
 
 #include "mainwindow.h"
-#include <QLabel>
 #include <QLineEdit>
-#include <QPushButton>
-#include <QtWidgets/QVBoxLayout>
-
+#include <QtWidgets/QDialogButtonBox>
+#include <iostream>
+#include <QtSerialPort/QSerialPort>
+#include <QtSerialPort/QSerialPortInfo>
 
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent)
 {
     QWidget * wgt = new QWidget(this);
     setCentralWidget(wgt);
-    setWindowTitle(tr("Генератор сигнала"));
+    setWindowTitle(trUtf8("Генератор сигнала"));
     setWindowIcon(QIcon("icon1.ico"));
 
-    QPixmap bimg("icon1.ico");
-    CheckDeviceAccButton = new QPushButton();
-    CheckDeviceAccButton->setIcon(bimg);
-    CheckDeviceAccButton->setWindowIcon(QIcon("icon1.ico"));
+    buttonBox = new QHBoxLayout();
+    pbExit = new QPushButton (trUtf8("Выход"), this);
+    buttonBox->addWidget(pbExit);
 
-    AccLabel = new QLabel("Проверить доступность генератора : ");
-    // устанавливаем размер и положение кнопки
+    listWidget = new QListWidget (this);
 
-    QHBoxLayout *mainLayout = new QHBoxLayout();
-    mainLayout->addWidget(AccLabel);
-    mainLayout->addWidget(CheckDeviceAccButton);
-    wgt->setLayout(mainLayout);
+    AccessPage = new deviceAccessPage(this);
+    impFilePage = new importFilePage(this);
 
-//    connect(CheckDeviceAccButton, SIGNAL (released()), this, SLOT (handleButton()));
+    itemAccessPage = new QListWidgetItem (trUtf8("Доступность"), listWidget);
+    itemExportPage = new QListWidgetItem (trUtf8("Импорт файла частот"), listWidget);
 
-    //createFormInterior();
+    stackLay = new QStackedLayout;
+    stackLay->addWidget(AccessPage);
+    stackLay->addWidget(impFilePage);
+    connect(listWidget, SIGNAL(currentRowChanged(int)),
+            stackLay, SLOT(setCurrentIndex(int)));
+    listWidget->setCurrentRow(0);
+
+    connect(listWidget, SIGNAL(itemClicked(QListWidgetItem*)),
+            this, SLOT(onAccessItemClicked(QListWidgetItem*)));
+
+
+
+    QHBoxLayout *ContentLay = new QHBoxLayout();
+    ContentLay->addWidget(listWidget);
+    ContentLay->addLayout(stackLay);
+    ContentLay->setStretchFactor(listWidget,1);
+    ContentLay->setStretchFactor(stackLay,2);
+
+
+    QVBoxLayout *mainLay = new QVBoxLayout();
+    mainLay->addLayout(ContentLay);
+    mainLay->addLayout(buttonBox);
+    wgt->setLayout(mainLay);
+
+    //tabViewPoint = new TabViewPoint(this);
 }
 
 MainWindow::~MainWindow()
@@ -57,10 +78,30 @@ MainWindow::~MainWindow()
 //    wgt->setLayout(MainLayout);
 //}
 
-void MainWindow::handleButton()
+
+void MainWindow::onAccessItemClicked(QListWidgetItem* item)
 {
-    // меняем текст
-    CheckDeviceAccButton->setText("Example");
-    // изменяем размер кнопки
-    CheckDeviceAccButton->resize(100,100);
+    if (listWidget->item(0) == item) {
+
+        for( int i = 0; i <100+1; ++i ) {
+            AccessPage->progressBar->setValue(i);
+            AccessPage->AccLog->append(QString::number(i));
+        }
+                foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
+
+                std::cout << info.portName().toUtf8().toStdString() << std::endl;
+                std::cout << info.description().toUtf8().toStdString() << std::endl;
+                std::cout << info.manufacturer().toUtf8().toStdString() << std::endl;
+
+                QSerialPort serial;
+                serial.setPort(info);
+                if (serial.open(QIODevice::ReadWrite))
+                    serial.close();
+            }
+
+
+    }
 }
+
+
+
