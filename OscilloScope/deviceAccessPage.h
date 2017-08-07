@@ -18,6 +18,9 @@ public:
     deviceAccessPage (QWidget *parent = 0);
     QProgressBar *progressBar;
     QTextEdit *AccLog;
+    QLabel *checkResultLabel;
+    QLabel *checkResultIcon;
+
 
 private:
     QLabel *pageName;

@@ -83,21 +83,22 @@ void MainWindow::onAccessItemClicked(QListWidgetItem* item)
 {
     if (listWidget->item(0) == item) {
 
-        for( int i = 0; i <100+1; ++i ) {
-            AccessPage->progressBar->setValue(i);
-            AccessPage->AccLog->append(QString::number(i));
-        }
+        int PortCount = QSerialPortInfo::availablePorts().length();
+        int PortIt = 0;
+        AccessPage->AccLog->append("Производится опрашивание доступных портов");
+
                 foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
-
-                std::cout << info.portName().toUtf8().toStdString() << std::endl;
-                std::cout << info.description().toUtf8().toStdString() << std::endl;
-                std::cout << info.manufacturer().toUtf8().toStdString() << std::endl;
-
+                PortIt = PortIt + 1;
+                int pBarValue = int((PortIt/PortCount)*100);
+                AccessPage->progressBar->setValue(pBarValue);
+                AccessPage->AccLog->append("Проверяется порт : " + info.portName() + " : устройство не найдено");
                 QSerialPort serial;
                 serial.setPort(info);
                 if (serial.open(QIODevice::ReadWrite))
                     serial.close();
             }
+
+        AccessPage->AccLog->append("Проверка портов завершена");
 
 
     }
