@@ -25,13 +25,19 @@ MainWindow::MainWindow(QWidget *parent)
 
     AccessPage = new deviceAccessPage(this);
     impFilePage = new importFilePage(this);
+    resPage = new resultsPage(this);
 
-    itemAccessPage = new QListWidgetItem (trUtf8("Доступность"), listWidget);
+    itemAccessPage = new QListWidgetItem (trUtf8("Подключение устройства"), listWidget);
+    itemAccessPage->setIcon(QIcon("plugin.ico"));
     itemExportPage = new QListWidgetItem (trUtf8("Импорт файла частот"), listWidget);
+    itemExportPage->setIcon(QIcon("import.ico"));
+    itemResultPage = new QListWidgetItem (trUtf8("Выполнение исследования"), listWidget);
+    itemResultPage->setIcon(QIcon("play.ico"));
 
     stackLay = new QStackedLayout;
     stackLay->addWidget(AccessPage);
     stackLay->addWidget(impFilePage);
+    stackLay->addWidget(resPage);
     connect(listWidget, SIGNAL(currentRowChanged(int)),
             stackLay, SLOT(setCurrentIndex(int)));
     listWidget->setCurrentRow(0);

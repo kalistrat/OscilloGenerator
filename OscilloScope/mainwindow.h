@@ -15,6 +15,7 @@
 #include <QtWidgets/QDialogButtonBox>
 #include "deviceAccessPage.h"
 #include "importFilePage.h"
+#include "resultsPage.h"
 
 class MainWindow : public QMainWindow
 {
@@ -31,9 +32,12 @@ private:
     QListWidget *listWidget;
     QListWidgetItem *itemAccessPage;
     QListWidgetItem *itemExportPage;
+    QListWidgetItem *itemResultPage;
+
     QStackedLayout *stackLay;
     deviceAccessPage *AccessPage;
     importFilePage *impFilePage;
+    resultsPage *resPage;
     QPushButton *pbExit;
     QHBoxLayout *buttonBox;
 
