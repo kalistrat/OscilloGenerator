@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     buttonBox = new QHBoxLayout();
     pbExit = new QPushButton (trUtf8("Выход"), this);
+    pbExit->setIcon(QIcon("logout.ico"));
+    pbExit->setFixedSize(70,30);
     buttonBox->addWidget(pbExit);
 
     listWidget = new QListWidget (this);

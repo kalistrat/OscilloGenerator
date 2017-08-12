@@ -38,17 +38,17 @@ deviceAccessPage::deviceAccessPage (QWidget *parent)
     AccLog->append("Проверка портов завершена");
 
     checkResultLabel = new QLabel();
-    checkResultIcon = new QLabel();
+    //checkResultIcon = new QLabel();
 
     QHBoxLayout *checkLay = new QHBoxLayout();
     checkLay->addWidget(checkResultLabel);
-    checkLay->addWidget(checkResultIcon);
+    //checkLay->addWidget(checkResultIcon);
 
     if (isSuccess == 0) {
         checkResultLabel->setText(trUtf8("Устройство не найдено. Подключите его и повторите поиск"));
-        QPixmap pix("search-fail.ico");
-        QPixmap scaledpix = pix.scaled(QSize(20,20),  Qt::KeepAspectRatio);
-        checkResultIcon->setPixmap(scaledpix);
+        //QPixmap pix("search-fail.ico");
+        //QPixmap scaledpix = pix.scaled(QSize(20,20),  Qt::KeepAspectRatio);
+        //checkResultIcon->setPixmap(scaledpix);
     } else {
         checkResultIcon->setText(" successable");
     }
